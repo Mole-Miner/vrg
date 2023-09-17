@@ -1,0 +1,16 @@
+{
+  "name": "vrc",
+  "version": "1.0.0",
+  "main": "main.js",
+  "private": true,
+  "scripts": {
+    "start": "electron ."
+  },
+  "keywords": ["Electron", "JS"],
+  "author": "Vladyslav Vyslobitskyi",
+  "license": "ISC",
+  "description": "Viber report message generator",
+  "devDependencies": {
+    "electron": "^26.2.1"
+  }
+}
