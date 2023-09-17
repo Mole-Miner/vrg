@@ -11,6 +11,10 @@ body {
     height: 100%;
 }
 
+input {
+    border: none;
+}
+
 .file-zone {
     display: grid;
     place-content: center;
@@ -32,11 +36,26 @@ body {
 
 .report-editor {
     display: none;
-    background-color: lightblue;
+    grid-template-columns: auto 100px;
+    place-content: center;
+    min-height: 100%;
+}
+
+.report-editor__cell {
+    border-bottom: 1px solid whitesmoke;
+    padding: 1rem;
+}
+
+.report-editor__cell--store {
+    grid-column: 1 / 2;
+}
+
+.report-editor__cell--delivery {
+    grid-column: 2 / 3;
 }
 
 .report-editor--show {
-    display: block;
+    display: grid;
 }
 
 .report-editor--hide {

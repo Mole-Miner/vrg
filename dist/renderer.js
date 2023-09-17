@@ -94,21 +94,36 @@ class ReportEditor {
     processReport(doc) {
         const rows = [...doc.querySelectorAll('tr')]
             .slice(10)
-            .filter((row) => {
+            .map((row) => {
             const cells = row.children;
             const store = cells[1].textContent;
             const sales = parseInt(cells[4].textContent.replace(',', ''), 10) || 0;
             const remainder = parseInt(cells[5].textContent.replace(',', ''), 10) || 0;
-            return store.startsWith('ТТ') || isNaN(remainder) || remainder < sales;
+            return { store, sales, remainder };
         })
-            .reduce((acc, row) => {
-            const cells = row.children;
-            const store = cells[1].textContent;
-            const sales = parseInt(cells[4].textContent.replace(',', ''), 10) || 0;
-            const remainder = parseInt(cells[5].textContent.replace(',', ''), 10) || 0;
-            const delivery = sales + remainder;
-            return [...acc, `${store} ${delivery}`];
-        }, []);
+            .filter(({ store, sales, remainder }) => {
+            return store.startsWith('ТТ') || remainder < sales;
+        })
+            .map(({ store, sales, remainder }) => {
+            const delivery = remainder === 0 ? sales : sales - remainder;
+            return store.startsWith('ТТ') ? ({ store }) : ({ store, delivery });
+        });
+        this.renderReport(rows);
+    }
+    renderReport(rows) {
+        rows.forEach(({ store, delivery }) => {
+            const storeCell = document.createElement('div');
+            storeCell.className = 'report-editor__cell report-editor__cell--store';
+            storeCell.textContent = store;
+            this.editorZone.appendChild(storeCell);
+            if (!store.startsWith('ТТ')) {
+                const deliveryCell = document.createElement('input');
+                deliveryCell.type = 'number';
+                deliveryCell.className = 'report-editor__cell report-editor__cell--delivery';
+                deliveryCell.value = delivery?.toString() ?? '';
+                this.editorZone.appendChild(deliveryCell);
+            }
+        });
     }
 }
 const domParser = new DOMParser;
