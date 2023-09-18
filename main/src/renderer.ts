@@ -11,7 +11,11 @@ class HTMLFileReader extends FileReader {
     this.addEventListener('error', this.onFail);
   }
 
-  public readHTMLFile(file: File, successFn: HTMLFileReaderSuccessFn, failFn: HTMLFileReaderFailFn) {
+  public readHTMLFile(
+    file: File,
+    successFn: HTMLFileReaderSuccessFn,
+    failFn: HTMLFileReaderFailFn
+  ) {
     if (!file || file.type !== 'text/html') {
       failFn('Expected .htm file');
       return;
@@ -23,7 +27,10 @@ class HTMLFileReader extends FileReader {
 
   private onSuccess() {
     try {
-      const doc = this.domParser.parseFromString(this.result as string, 'text/html');
+      const doc = this.domParser.parseFromString(
+        this.result as string,
+        'text/html'
+      );
       this.successFn(doc);
     } catch (err) {
       this.failFn('Failed to parse .htm');
@@ -43,10 +50,14 @@ class FileZone {
     this.dropZone.addEventListener('dragover', this.onDragOver);
     this.dropZone.addEventListener('drop', (e) => this.onDrop(e));
 
-    const fileInputElement = document.querySelector('.file-zone > input[type=file]')! as HTMLInputElement;
+    const fileInputElement = document.querySelector(
+      '.file-zone > input[type=file]'
+    )! as HTMLInputElement;
     fileInputElement.addEventListener('change', (e) => this.onChange(e));
 
-    const buttonElement = document.querySelector('.file-zone > button')! as HTMLButtonElement;
+    const buttonElement = document.querySelector(
+      '.file-zone > button'
+    )! as HTMLButtonElement;
     buttonElement.addEventListener('click', () => fileInputElement.click());
   }
 
@@ -77,19 +88,25 @@ class FileZone {
   }
 
   private readHTMLFile(file: File) {
-    this.htmlFileReader.readHTMLFile(file, (doc) => {
-      dispatchEvent(new CustomEvent('success-read', { detail: doc }));
-    }, (err) => {
-      dispatchEvent(new CustomEvent('fail-read', { detail: err }));
-    })
+    this.htmlFileReader.readHTMLFile(
+      file,
+      (doc) => {
+        dispatchEvent(new CustomEvent('success-read', { detail: doc }));
+      },
+      (err) => {
+        dispatchEvent(new CustomEvent('fail-read', { detail: err }));
+      }
+    );
   }
 }
 
 class ReportEditor {
-  private readonly editorZone: HTMLDivElement
+  private readonly editorZone: HTMLDivElement;
 
   constructor() {
-    this.editorZone = document.querySelector('.report-editor')! as HTMLDivElement;
+    this.editorZone = document.querySelector(
+      '.report-editor'
+    )! as HTMLDivElement;
 
     addEventListener('success-read', (e) => {
       this.show();
@@ -116,20 +133,21 @@ class ReportEditor {
         const cells = row.children;
         const store = cells[1].textContent!;
         const sales = parseInt(cells[4].textContent!.replace(',', ''), 10) || 0;
-        const remainder = parseInt(cells[5].textContent!.replace(',', ''), 10) || 0;
-        return {store, sales, remainder}
+        const remainder =
+          parseInt(cells[5].textContent!.replace(',', ''), 10) || 0;
+        return { store, sales, remainder };
       })
-      .filter(({store, sales, remainder}) => {
+      .filter(({ store, sales, remainder }) => {
         return store.startsWith('ТТ') || remainder < sales;
       })
       .map(({ store, sales, remainder }) => {
         const delivery = remainder === 0 ? sales : sales - remainder;
-        return store.startsWith('ТТ') ? ({store}) : ({store, delivery});
+        return store.startsWith('ТТ') ? { store } : { store, delivery };
       });
     this.renderReport(rows);
   }
 
-  private renderReport(rows: {store: string; delivery?: number}[]) {
+  private renderReport(rows: { store: string; delivery?: number }[]) {
     rows.forEach(({ store, delivery }) => {
       const storeCell = document.createElement('div');
       storeCell.className = 'report-editor__cell report-editor__cell--store';
@@ -138,7 +156,8 @@ class ReportEditor {
       if (!store.startsWith('ТТ')) {
         const deliveryCell = document.createElement('input');
         deliveryCell.type = 'number';
-        deliveryCell.className = 'report-editor__cell report-editor__cell--delivery';
+        deliveryCell.className =
+          'report-editor__cell report-editor__cell--delivery';
         deliveryCell.value = delivery?.toString() ?? '';
         this.editorZone.appendChild(deliveryCell);
       }
@@ -146,7 +165,7 @@ class ReportEditor {
   }
 }
 
-const domParser = new DOMParser;
+const domParser = new DOMParser();
 const htmlFileReader = new HTMLFileReader(domParser);
 const fileZone = new FileZone(htmlFileReader);
-const reportEditor = new ReportEditor;
+const reportEditor = new ReportEditor();
