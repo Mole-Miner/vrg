@@ -1,10 +1,12 @@
 {
   "name": "vrc",
   "version": "1.0.0",
-  "main": "./dist/main.js",
   "private": true,
   "scripts": {
-    "start": "tsc && electron ."
+    "start": "nodemon .",
+    "build:renderer": "cd renderer && npm run build",
+    "build:main": "cd main && npm run build",
+    "build": "npm run build:renderer && npm run build:main"
   },
   "keywords": [
     "Electron",
@@ -16,8 +18,7 @@
   "description": "Viber report message generator",
   "devDependencies": {
     "@angular/cli": "^16.2.2",
-    "electron": "^26.2.1",
-    "ts-node": "^10.9.1",
-    "typescript": "^5.2.2"
+    "nodemon": "^3.0.1",
+    "npm": "^10.1.0"
   }
 }

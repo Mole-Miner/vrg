@@ -1,0 +1,5 @@
+{
+  "watch": ["./main/src/*", "./renderer/src/*"],
+  "ext": "*",
+  "exec": "npm run build"
+}
