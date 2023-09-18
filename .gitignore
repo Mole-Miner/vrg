@@ -1,4 +1,9 @@
 node_modules
+npm-debug.log
 test
 dist
 release
+.vscode/
+.idea/
+/.angular/cache/
+.sass-cache/
