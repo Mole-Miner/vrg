@@ -3,9 +3,9 @@ import { inject } from '@angular/core';
 import { concatMap, EMPTY } from 'rxjs';
 
 import { FileReaderService } from '../services/file-reader.service';
-import { ReportService } from '../services/report.service';
+import { ReportItems, ReportService } from '../services/report.service';
 
-export const reportResolver: ResolveFn<any[]> = () => {
+export const reportResolver: ResolveFn<ReadonlyArray<ReportItems>> = () => {
   const router = inject(Router);
   const routerState = router.getCurrentNavigation()?.extras.state;
   const file = routerState ? (routerState['file'] as File) : undefined;
