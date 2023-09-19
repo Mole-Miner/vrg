@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "start": "nodemon .",
+    "start:renderer": "cd renderer && npm run start",
+    "start:main": "cd main && npm run watch",
+    "start": "concurrently \"npm run start:renderer\" \"npm run start:main\"",
     "build:renderer": "cd renderer && npm run build",
     "build:main": "cd main && npm run build",
     "build": "npm run build:renderer && npm run build:main",
@@ -19,7 +21,7 @@
   "description": "Viber report message generator",
   "devDependencies": {
     "@angular/cli": "^16.2.2",
-    "nodemon": "^3.0.1",
+    "concurrently": "^8.2.1",
     "npm": "^10.1.0",
     "prettier": "^3.0.3"
   }

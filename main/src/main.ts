@@ -1,5 +1,7 @@
 import { app, BrowserWindow, screen } from 'electron';
 
+const isDev = process.argv.at(2) === 'dev';
+
 const createWindow = () => {
   const { width, height } = screen.getPrimaryDisplay().workAreaSize;
 
@@ -14,7 +16,11 @@ const createWindow = () => {
   win.maximize();
   win.webContents.openDevTools();
 
-  win.loadFile('../renderer/index.html');
+  if (isDev) {
+    win.loadURL('http://localhost:4200');
+  } else {
+    win.loadFile('../renderer/index.html');
+  }
 };
 
 app.whenReady().then(() => {
