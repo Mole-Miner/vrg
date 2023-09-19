@@ -1,6 +1,6 @@
 import { Component, ElementRef, HostListener, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router } from "@angular/router";
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-file',
@@ -11,10 +11,9 @@ import { Router } from "@angular/router";
 })
 export class ImportComponent {
   @ViewChild('fileInput')
-  readonly fileInput!: ElementRef<HTMLInputElement>
+  readonly fileInput!: ElementRef<HTMLInputElement>;
 
-  constructor(private readonly router: Router) {
-  }
+  constructor(private readonly router: Router) {}
 
   @HostListener('dragover', ['$event'])
   onDragEnd(e: DragEvent) {

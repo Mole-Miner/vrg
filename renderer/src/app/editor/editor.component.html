@@ -1,1 +1,6 @@
-<p>report works!</p>
+<ng-container *ngIf="(report$ | async) as report">
+  <ng-container *ngFor="let item of report">
+    <div>{{item.store}}</div>
+    <div>{{item.delivery}}</div>
+  </ng-container>
+</ng-container>
