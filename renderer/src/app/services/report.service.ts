@@ -10,7 +10,7 @@ import {
   toArray
 } from 'rxjs';
 
-type ReportItem = Partial<{ factory: string; product: string; delivery: string }>;
+type ReportItem = Record<string, string>;
 export type ReportItems = ReadonlyArray<ReportItem>;
 
 @Injectable()
@@ -32,8 +32,8 @@ export class ReportService {
         (acc, { name, sales, remainder }) => {
           if (name.startsWith('ТТ')) {
             return {
-              factory: name
-            };
+              factory: name,
+            } as ReportItem;
           }
           const delivery = sales - remainder;
           const formatDelivery =
@@ -41,10 +41,10 @@ export class ReportService {
               ? String(delivery / 1000).replace('.', ',')
               : new Intl.NumberFormat('en-EN').format(delivery);
           return {
-            factory: acc.factory,
+            factory: acc['factory'],
             product: name,
             delivery: formatDelivery
-          };
+          } as ReportItem;
         },
         {} as ReportItem
       ),

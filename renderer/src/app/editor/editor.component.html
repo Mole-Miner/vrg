@@ -1,6 +1,11 @@
-<ng-container *ngIf="(report$ | async) as report">
-  <ng-container *ngFor="let item of report">
-    <div>{{item.store}}</div>
-    <div>{{item.delivery}}</div>
+<ng-container [formGroup]="form">
+  <ng-container formArrayName="report">
+    <div *ngFor="let control of formReport.controls; let i = index">
+      <ng-container [formArrayName]="i">
+        <div *ngFor="let item of control.controls; let j = index">
+          <input [formControlName]="j" />
+        </div>
+      </ng-container>
+    </div>
   </ng-container>
 </ng-container>

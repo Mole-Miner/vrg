@@ -22,6 +22,6 @@ export default [
   {
     path: '**',
     pathMatch: 'full',
-    redirectTo: 'file'
+    redirectTo: 'import'
   }
 ] as Routes;
