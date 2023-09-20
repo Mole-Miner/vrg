@@ -1,11 +1,14 @@
-<ng-container [formGroup]="form">
-  <ng-container formArrayName="report">
-    <div *ngFor="let control of formReport.controls; let i = index">
-      <ng-container [formArrayName]="i">
-        <div *ngFor="let item of control.controls; let j = index">
-          <input [formControlName]="j" />
-        </div>
-      </ng-container>
-    </div>
+<ng-container [formGroup]="reportForm">
+  <ng-container formArrayName="reportRows">
+    <h2>Склад</h2>
+    <h2>Номенклатура, Базова одиниця вимірювання</h2>
+    <h2>Кількість</h2>
+    <h2>Належить</h2>
+    <ng-container *ngFor="let group of reportFormRows.controls let i = index">
+      <div>{{report[i].storage}}</div>
+      <div>{{report[i].product}}</div>
+      <input type="text" [formControl]="group.controls['delivery']">
+      <input type="checkbox" [formControl]="group.controls['include']">
+    </ng-container>
   </ng-container>
 </ng-container>

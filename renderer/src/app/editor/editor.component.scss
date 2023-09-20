@@ -1,6 +1,6 @@
 :host {
   display: grid;
-  grid-template-columns: auto 100px;
+  grid-template-columns: auto auto 100px 50px;
   place-content: center;
   gap: 1rem;
   padding: 1rem;

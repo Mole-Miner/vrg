@@ -2,40 +2,49 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { map } from 'rxjs';
-import { FormArray, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import {
+  FormArray,
+  FormControl,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule
+} from '@angular/forms';
 
-import { ReportItems } from "../services/report.service";
+import { Report } from '../services/report.service';
 
 @Component({
   selector: 'app-report',
   standalone: true,
-  imports: [ CommonModule, ReactiveFormsModule ],
+  imports: [CommonModule, ReactiveFormsModule, FormsModule],
   templateUrl: './editor.component.html',
   styleUrls: ['./editor.component.scss']
 })
 export class EditorComponent implements OnInit, OnDestroy {
-  readonly form = new FormGroup({report: new FormArray<FormArray>([])});
+  readonly reportForm = new FormGroup({
+    reportRows: new FormArray<FormGroup<{delivery: FormControl, include: FormControl}>>([])
+  });
 
-  get formReport() {
-    return this.form.get('report') as FormArray<FormArray>
+  get reportFormRows() {
+    return this.reportForm.controls['reportRows'];
   }
+
+  report!: Report;
 
   constructor(private readonly activatedRoute: ActivatedRoute) {}
 
   ngOnInit() {
     this.activatedRoute.data
-      .pipe(
-        map((data) => data['report'] as ReadonlyArray<ReportItems>),
-      )
+      .pipe(map((data) => data['report'] as Report))
       .subscribe((report) => {
-        console.log(report);
-        for (const reportItems of report) {
-          const formArray = new FormArray<FormControl>([]);
-          for (const reportItem of reportItems.slice(1)) {
-            formArray.push(new FormControl(reportItem['delivery']));
-          }
-          this.formReport.push(formArray);
-        }
+        this.report = report;
+        this.report.forEach(({ delivery }) => {
+          this.reportFormRows.push(
+            new FormGroup({
+              delivery: new FormControl(delivery),
+              include: new FormControl(true)
+            })
+          );
+        });
       });
   }
 
