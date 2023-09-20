@@ -2,8 +2,8 @@ import { ResolveFn, Router } from '@angular/router';
 import { inject } from '@angular/core';
 import { concatMap, EMPTY } from 'rxjs';
 
-import { FileReaderService } from '../services/file-reader.service';
-import { Report, ReportService } from '../services/report.service';
+import { FileReaderService } from '@services/file-reader.service';
+import { Report, ReportService } from '@services/report.service';
 
 export const reportResolver: ResolveFn<Report> = () => {
   const router = inject(Router);

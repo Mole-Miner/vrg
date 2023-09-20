@@ -10,8 +10,8 @@ import {
 } from '@angular/forms';
 import { map, Subject, takeUntil } from 'rxjs';
 
-import { Report, ReportRow, ReportService } from '../services/report.service';
-import { CLIPBOARD } from '../injectros/clibboard';
+import { CLIPBOARD } from '@injectors/clibboard';
+import { Report, ReportRow, ReportService } from '@services/report.service';
 
 @Component({
   selector: 'app-report',

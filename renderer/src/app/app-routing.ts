@@ -1,8 +1,8 @@
 import { Routes } from '@angular/router';
 
-import { FileReaderService } from './services/file-reader.service';
-import { ReportService } from './services/report.service';
-import { reportResolver } from './resolvers/report.resolver';
+import { FileReaderService } from '@services/file-reader.service';
+import { ReportService } from '@services/report.service';
+import { reportResolver } from '@resolvers/report.resolver';
 
 export default [
   {

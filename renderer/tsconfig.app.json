@@ -3,7 +3,12 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "outDir": "./out-tsc/app",
-    "types": []
+    "types": [],
+    "paths": {
+      "@injectors/*": ["src/app/injectors/*"],
+      "@services/*": ["src/app/services/*"],
+      "@resolvers/*": ["src/app/resolvers/*"]
+    }
   },
   "files": [
     "src/main.ts"
