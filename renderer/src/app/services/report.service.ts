@@ -4,51 +4,65 @@ import {
   from,
   groupBy,
   map,
-  mergeMap,
+  mergeMap, Observable,
   scan,
   skip,
   toArray
 } from 'rxjs';
 
-type ReportItem = Record<string, string>;
-export type ReportItems = ReadonlyArray<ReportItem>;
+type DocumentRow = Readonly<{
+  storage: string;
+  product: string;
+  sales: number;
+  remainder: number;
+}>;
+
+type ReportRow = Readonly<{
+  storage: string;
+  product: string;
+  delivery: string;
+}>;
+
+type ReportRows = ReadonlyArray<ReportRow>;
+
+export type Report = ReadonlyArray<ReportRows>;
 
 @Injectable()
 export class ReportService {
-  processReport(doc: Document) {
+  processReport(doc: Document): Observable<Report> {
     return from([...doc.querySelectorAll('tr')]).pipe(
       skip(10),
-      map(({ cells }) => {
+      scan((acc, { cells }) => {
         const name = cells[1].textContent!;
+        if (name.startsWith('ТТ')) {
+          return { storage: name };
+        }
         const sales = this.extractNumberFromCell(cells[4]);
         const remainder = this.extractNumberFromCell(cells[5]);
-        return { name, sales, remainder };
-      }),
+        return {
+          storage: acc.storage as string,
+          product: name,
+          sales,
+          remainder
+        };
+      }, {} as any),
       filter(
-        ({ name, sales, remainder }) =>
-          name.startsWith('ТТ') || remainder < sales
+        ({ product, sales, remainder }: DocumentRow) =>
+          product !== '' && remainder <= sales
       ),
-      scan(
-        (acc, { name, sales, remainder }) => {
-          if (name.startsWith('ТТ')) {
-            return {
-              factory: name,
-            } as ReportItem;
-          }
-          const delivery = sales - remainder;
-          const formatDelivery =
-            delivery < 1000
-              ? String(delivery / 1000).replace('.', ',')
-              : new Intl.NumberFormat('en-EN').format(delivery);
-          return {
-            factory: acc['factory'],
-            product: name,
-            delivery: formatDelivery
-          } as ReportItem;
-        },
-        {} as ReportItem
-      ),
-      groupBy((item) => item['factory']),
+      map(({ storage, product, sales, remainder }): ReportRow => {
+        const delivery = sales - remainder;
+        const formattedDelivery =
+          delivery < 1000
+            ? String(delivery / 1000).replace('.', ',')
+            : new Intl.NumberFormat('en-EN').format(delivery);
+        return {
+          storage,
+          product,
+          delivery: formattedDelivery
+        };
+      }),
+      groupBy((reportRow) => reportRow.storage),
       mergeMap((group) => group.pipe(toArray())),
       toArray()
     );
