@@ -11,7 +11,7 @@ import {
 import { map, Subject, takeUntil } from 'rxjs';
 
 import { Report, ReportRow, ReportService } from '../services/report.service';
-import { CLIPBOARD } from "../injectros/clibboard";
+import { CLIPBOARD } from '../injectros/clibboard';
 
 @Component({
   selector: 'app-report',
@@ -40,9 +40,11 @@ export class EditorComponent implements OnInit, OnDestroy {
   }
 
   constructor(
-    @Inject(CLIPBOARD) @Optional() private readonly clipboard: Navigator['clipboard'],
+    @Inject(CLIPBOARD)
+    @Optional()
+    private readonly clipboard: Navigator['clipboard'],
     private readonly activatedRoute: ActivatedRoute,
-    private readonly reportService: ReportService,
+    private readonly reportService: ReportService
   ) {}
 
   ngOnInit() {
@@ -66,7 +68,8 @@ export class EditorComponent implements OnInit, OnDestroy {
       .filter(({ include }) => include)
       .map(({ include, ...rest }) => rest as ReportRow);
     this.reportService.reportToMessage(report).subscribe((message) => {
-      this.clipboard?.writeText(message)
+      this.clipboard
+        ?.writeText(message)
         .then(() => alert('Successfully copied report to clipboard'))
         .catch(() => alert('Failed to copy report to clipboard'));
     });

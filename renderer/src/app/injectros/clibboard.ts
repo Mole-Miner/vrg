@@ -1,7 +1,10 @@
-import { inject, InjectionToken } from "@angular/core";
+import { inject, InjectionToken } from '@angular/core';
 
-import { NAVIGATOR } from "./navigator";
+import { NAVIGATOR } from './navigator';
 
-export const CLIPBOARD = new InjectionToken<Navigator['clipboard']>('Window Navigator Clipboard', {
-  factory: () => inject(NAVIGATOR).clipboard
-});
+export const CLIPBOARD = new InjectionToken<Navigator['clipboard']>(
+  'Window Navigator Clipboard',
+  {
+    factory: () => inject(NAVIGATOR).clipboard
+  }
+);

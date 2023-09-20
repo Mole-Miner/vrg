@@ -9,7 +9,7 @@ import {
   reduce,
   scan,
   skip,
-  toArray,
+  toArray
 } from 'rxjs';
 
 type DocumentRow = Readonly<{
