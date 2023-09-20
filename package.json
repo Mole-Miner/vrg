@@ -1,7 +1,14 @@
 {
-  "name": "vrc",
+  "name": "vrg",
   "version": "1.0.0",
   "private": true,
+  "main": "release/main/main.js",
+  "build": {
+    "appId": "com.vrg.app",
+    "win": {
+      "icon": "release/main/logo.ico"
+    }
+  },
   "scripts": {
     "start:renderer": "cd renderer && npm run start",
     "start:main": "cd main && npm run watch",
@@ -9,12 +16,16 @@
     "build:renderer": "cd renderer && npm run build",
     "build:main": "cd main && npm run build",
     "build": "npm run build:renderer && npm run build:main",
+    "electron": "cd main && npm run electron",
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder",
     "format": "prettier --write './**/*.{js,jsx,ts,tsx,css,scss,md,json}' --config ./.prettierrc"
   },
   "keywords": [
     "Electron",
-    "TS",
-    "JS"
+    "Angular",
+    "TypeScript",
+    "JavaScript"
   ],
   "author": "Vladyslav Vyslobitskyi",
   "license": "ISC",
@@ -22,6 +33,8 @@
   "devDependencies": {
     "@angular/cli": "^16.2.2",
     "concurrently": "^8.2.1",
+    "electron": "^26.2.1",
+    "electron-builder": "^24.6.4",
     "npm": "^10.1.0",
     "prettier": "^3.0.3"
   }

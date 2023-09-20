@@ -11,7 +11,7 @@
     "Electron",
     "TypeScript"
   ],
-  "author": "",
+  "author": "Vladyslav Vyslobitskyi",
   "license": "ISC",
   "devDependencies": {
     "electron": "^26.2.1",
