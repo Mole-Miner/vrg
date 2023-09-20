@@ -18,6 +18,10 @@ const createWindow = () => {
   win.maximize();
 
   if (isDev) {
+    win.webContents.openDevTools();
+  }
+
+  if (isDev) {
     win.loadURL('http://localhost:4200');
   } else {
     win.loadFile('../renderer/index.html');
