@@ -1,14 +1,5 @@
 import { Injectable } from '@angular/core';
-import {
-  filter,
-  from,
-  groupBy,
-  map,
-  mergeMap, Observable,
-  scan,
-  skip,
-  toArray
-} from 'rxjs';
+import { filter, from, map, Observable, scan, skip, toArray } from 'rxjs';
 
 type DocumentRow = Readonly<{
   storage: string;
@@ -23,9 +14,7 @@ type ReportRow = Readonly<{
   delivery: string;
 }>;
 
-type ReportRows = ReadonlyArray<ReportRow>;
-
-export type Report = ReadonlyArray<ReportRows>;
+export type Report = ReadonlyArray<ReportRow>;
 
 @Injectable()
 export class ReportService {
@@ -48,7 +37,7 @@ export class ReportService {
       }, {} as any),
       filter(
         ({ product, sales, remainder }: DocumentRow) =>
-          product !== '' && remainder <= sales
+          product !== '' && remainder < sales
       ),
       map(({ storage, product, sales, remainder }): ReportRow => {
         const delivery = sales - remainder;
@@ -62,8 +51,6 @@ export class ReportService {
           delivery: formattedDelivery
         };
       }),
-      groupBy((reportRow) => reportRow.storage),
-      mergeMap((group) => group.pipe(toArray())),
       toArray()
     );
   }
