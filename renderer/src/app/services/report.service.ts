@@ -8,7 +8,8 @@ type DocumentRow = Readonly<{
   remainder: number;
 }>;
 
-type ReportRow = Readonly<{
+export type ReportRow = Readonly<{
+  id: number;
   storage: string;
   product: string;
   delivery: string;
@@ -39,13 +40,14 @@ export class ReportService {
         ({ product, sales, remainder }: DocumentRow) =>
           product !== '' && remainder < sales
       ),
-      map(({ storage, product, sales, remainder }): ReportRow => {
+      map(({ storage, product, sales, remainder }, index): ReportRow => {
         const delivery = sales - remainder;
         const formattedDelivery =
           delivery < 1000
             ? String(delivery / 1000).replace('.', ',')
             : new Intl.NumberFormat('en-EN').format(delivery);
         return {
+          id: index,
           storage,
           product,
           delivery: formattedDelivery
