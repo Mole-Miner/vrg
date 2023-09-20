@@ -16,5 +16,5 @@ export const reportResolver: ResolveFn<Report> = () => {
   const reportService = inject(ReportService);
   return frService
     .readFile(file)
-    .pipe(concatMap((doc) => reportService.processReport(doc)));
+    .pipe(concatMap((doc) => reportService.documentToReport(doc)));
 };

@@ -1,5 +1,21 @@
 import { Injectable } from '@angular/core';
-import { filter, from, map, Observable, scan, skip, toArray } from 'rxjs';
+import {
+  combineLatestAll,
+  concatAll,
+  filter,
+  from,
+  groupBy,
+  map,
+  mergeAll,
+  mergeMap,
+  Observable,
+  reduce,
+  scan,
+  skip,
+  tap,
+  toArray,
+  withLatestFrom
+} from 'rxjs';
 
 type DocumentRow = Readonly<{
   storage: string;
@@ -19,8 +35,8 @@ export type Report = ReadonlyArray<ReportRow>;
 
 @Injectable()
 export class ReportService {
-  processReport(doc: Document): Observable<Report> {
-    return from([...doc.querySelectorAll('tr')]).pipe(
+  documentToReport(doc: Document): Observable<Report> {
+    return from(doc.querySelectorAll('tr')).pipe(
       skip(10),
       scan((acc, { cells }) => {
         const name = cells[1].textContent!;
@@ -54,6 +70,26 @@ export class ReportService {
         };
       }),
       toArray()
+    );
+  }
+
+  reportToMessage(report: Report): Observable<string> {
+    return from(report).pipe(
+      groupBy(({ storage }) => storage),
+      mergeMap((group) =>
+        group.pipe(
+          scan((acc, { storage, product, delivery }) => {
+            let row = '';
+            if (acc.length === 0) {
+              row = `\n\n${storage}`;
+            }
+            row = row + `\n${product} ${delivery}`;
+            return row;
+          }, ''),
+          toArray()
+        )
+      ),
+      reduce((acc, curr) => [...acc, ...curr].join(''), '')
     );
   }
 
