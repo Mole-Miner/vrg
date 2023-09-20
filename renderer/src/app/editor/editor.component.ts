@@ -10,7 +10,7 @@ import {
 } from '@angular/forms';
 import { map, Subject, takeUntil } from 'rxjs';
 
-import { Report, ReportRow } from '../services/report.service';
+import { Report, ReportRow, ReportService } from '../services/report.service';
 
 @Component({
   selector: 'app-report',
@@ -38,7 +38,10 @@ export class EditorComponent implements OnInit, OnDestroy {
     return this.reportForm.controls['reportRows'];
   }
 
-  constructor(private readonly activatedRoute: ActivatedRoute) {}
+  constructor(
+    private readonly activatedRoute: ActivatedRoute,
+    private readonly reportService: ReportService
+  ) {}
 
   ngOnInit() {
     const routeData$ = this.activatedRoute.data.pipe(
@@ -55,12 +58,16 @@ export class EditorComponent implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
-  onSaveReport() {
-    const finalReport = this.reportFormRows
+  onExportReport() {
+    const report = this.reportFormRows
       .getRawValue()
       .filter(({ include }) => include)
       .map(({ include, ...rest }) => rest as ReportRow);
-    console.log(finalReport);
+    this.reportService.reportToMessage(report).subscribe((message) => {
+      window.navigator.clipboard
+        .writeText(message)
+        .catch(() => alert('Failed to copy message to clipboard'));
+    });
   }
 
   private buildReportForm(report: Report) {

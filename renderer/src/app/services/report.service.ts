@@ -1,20 +1,15 @@
 import { Injectable } from '@angular/core';
 import {
-  combineLatestAll,
-  concatAll,
   filter,
   from,
   groupBy,
   map,
-  mergeAll,
   mergeMap,
   Observable,
   reduce,
   scan,
   skip,
-  tap,
   toArray,
-  withLatestFrom
 } from 'rxjs';
 
 type DocumentRow = Readonly<{
