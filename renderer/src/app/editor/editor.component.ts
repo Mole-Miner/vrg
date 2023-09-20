@@ -66,7 +66,8 @@ export class EditorComponent implements OnInit, OnDestroy {
     this.reportService.reportToMessage(report).subscribe((message) => {
       window.navigator.clipboard
         .writeText(message)
-        .catch(() => alert('Failed to copy message to clipboard'));
+        .then(() => alert('Successfully copied report to clipboard'))
+        .catch(() => alert('Failed to copy report to clipboard'));
     });
   }
 

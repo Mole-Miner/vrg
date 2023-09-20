@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-file',
+  selector: 'app-import',
   standalone: true,
   imports: [CommonModule],
   templateUrl: './import.component.html',

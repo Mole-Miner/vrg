@@ -9,12 +9,13 @@ const createWindow = () => {
     width,
     height,
     minWidth: 800,
-    minHeight: 600
+    minHeight: 600,
+    title: 'VRG v1.0.0',
+    icon: __dirname + '/logo.ico'
   });
 
   win.setMenu(null);
   win.maximize();
-  win.webContents.openDevTools();
 
   if (isDev) {
     win.loadURL('http://localhost:4200');
