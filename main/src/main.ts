@@ -1,4 +1,6 @@
 import { app, BrowserWindow, screen } from 'electron';
+import * as path from 'node:path';
+import * as url from 'node:url';
 
 const isDev = process.argv.at(2) === 'dev';
 
@@ -11,20 +13,27 @@ const createWindow = () => {
     minWidth: 800,
     minHeight: 600,
     title: 'VRG v1.0.0',
-    icon: __dirname + '/logo.ico'
+    icon: url.format({
+      pathname: path.resolve(__dirname, 'logo.ico'),
+    })
   });
 
   win.setMenu(null);
   win.maximize();
+  win.webContents.openDevTools();
 
   if (isDev) {
-    win.webContents.openDevTools();
-  }
-
-  if (isDev) {
-    win.loadURL('http://localhost:4200');
+    win.loadURL(url.format({
+      hostname: 'localhost',
+      port: 4200,
+      protocol: 'http'
+    }));
   } else {
-    win.loadFile('../renderer/index.html');
+    win.loadFile(url.format({
+      pathname: path.resolve(__dirname, 'renderer', 'index.html'),
+      protocol: 'file',
+      slashes: true
+    }));
   }
 };
 
