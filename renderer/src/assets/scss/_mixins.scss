@@ -1,0 +1,13 @@
+@use './variables' as var;
+
+@mixin clickable() {
+  border-radius: var.$border-radius;
+  padding: var.$s8;
+  color: var.$white;
+  background-color: var.$black;
+  cursor: pointer;
+
+  &:hover {
+    background-color: var.$dark-gray;
+  }
+}

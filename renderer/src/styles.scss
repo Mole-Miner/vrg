@@ -1,10 +1,40 @@
 /* You can add global styles to this file, and also import other style files */
+@use './assets/scss/variables' as var;
+@use './assets/scss/mixins' as mix;
+
+@font-face {
+  font-family: Poppins, sans-serif;
+  src: url("./assets/fonts/poppins/Poppins-Regular.ttf");
+}
+
 *,
 *:before,
 *:after {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  font-family: Poppins, sans-serif;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var.$white-smoke;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var.$gray;
+  border-radius: var.$border-radius;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #343434;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 html,
@@ -13,6 +43,11 @@ body {
 }
 
 a {
-  color: black;
+  color: var.$black;
   text-decoration: none;
+}
+
+button {
+  border: none;
+  @include mix.clickable;
 }

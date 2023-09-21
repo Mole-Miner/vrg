@@ -1,3 +1,5 @@
+@use '../assets/scss/variables' as var;
+
 :host {
   display: flex;
   height: 100%;
@@ -7,21 +9,27 @@
   top: 0;
   display: flex;
   flex-direction: column;
-  row-gap: 0.5rem;
-  padding: 0.5rem;
-  border-right: 1px solid whitesmoke;
-  box-shadow: 1px 0 0 whitesmoke;
+  row-gap: var.$s8;
+  padding: var.$s8;
+  border-right: 1px solid var.$white-smoke;
+  box-shadow: 1px 0 0 var.$white-smoke;
 
   &__item {
-    border-radius: 4px;
-    padding: 0.5rem;
-    font-size: 20px;
+    border-radius: var.$border-radius;
+    padding: var.$s8;
   }
 
   &__item:hover,
   &__item--active {
-    color: white;
-    background-color: black;
+    color: var.$white;
+  }
+
+  &__item:hover {
+    background: var.$dark-gray;
+  }
+
+  &__item--active {
+    background: var.$black;
   }
 }
 
