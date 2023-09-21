@@ -20,7 +20,6 @@ const createWindow = () => {
 
   win.setMenu(null);
   win.maximize();
-  win.webContents.openDevTools();
 
   if (isDev) {
     win.loadURL(url.format({
@@ -30,9 +29,7 @@ const createWindow = () => {
     }));
   } else {
     win.loadFile(url.format({
-      pathname: path.resolve(__dirname, 'renderer', 'index.html'),
-      protocol: 'file',
-      slashes: true
+      pathname: path.resolve(__dirname, '..', 'renderer', 'index.html')
     }));
   }
 };

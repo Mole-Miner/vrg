@@ -6,7 +6,14 @@
   "build": {
     "appId": "com.vrg.app",
     "win": {
-      "icon": "release/main/logo.ico"
+      "target": "MSI",
+      "icon": "release/main/logo.ico",
+      "extraResources": [
+        {
+          "from": "release/renderer",
+          "to": "renderer"
+        }
+      ]
     }
   },
   "scripts": {
